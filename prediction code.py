@@ -58,10 +58,7 @@ print("minimum temperature of the day is:" ,min1)
 print("maximum humidity of the day is:" ,max2)
 print("minimum humidity of the day is:" ,min2)
 
-('maximum temperature of the day is:', 31)
-('minimum temperature of the day is:', 0)
-('maximum humidity of the day is:', 95)
-('minimum humidity of the day is:', 0)
+
 plt.figure(figsize=(15,10))
 plt.tight_layout()
 seabornInstance.distplot(data['field1'])
