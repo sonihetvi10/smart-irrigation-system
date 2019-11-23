@@ -1,0 +1,292 @@
+import numpy as np
+import pandas as pd
+import numpy as np
+import math
+import sklearn
+from sklearn.metrics import mean_squared_error,r2_score,mean_absolute_error
+import matplotlib.pyplot as plt
+import seaborn as sb
+from sklearn import preprocessing
+import csv
+import matplotlib.pyplot as plt 
+import seaborn as seabornInstance 
+from sklearn.model_selection import train_test_split 
+from sklearn.linear_model import LinearRegression
+from sklearn import metrics
+
+data=pd.read_csv("dataset1.csv")
+print("Data heads:")
+print(data.head())
+print("Null values in the dataset before preprocessing:")
+print(data.isnull().sum())
+print("Filling null values with mean of that particular column")
+data=data.fillna(np.mean(data))
+print("Mean of data:")
+print(np.mean(data))
+print("Null values in the dataset after preprocessing:")
+print(data.isnull().sum())
+print("\n\nShape: ",data.shape)
+?
+ 
+print("Info:")
+print(data.info())
+ 
+print("Group by:")
+data.groupby('field1').size()
+
+
+print("Group by:")
+data.groupby('field2').size()
+
+
+print("Co-Variance =",data.cov())
+print("Co-Relation =",data.corr())
+ 
+print("Scatter plot of field1 and field2 attributes")
+plt.scatter(data.field1,data.field2)
+plt.xlabel("Temperature")
+plt.ylabel("humidity")
+Scatter plot of field1 and field2 attributes
+Text(0,0.5,'humidity')
+
+max1= data.field1.max() 
+min1= data.field1.min()
+max2=data.field2.max()
+min2= data.field2.min()
+print("maximum temperature of the day is:" ,max1)
+print("minimum temperature of the day is:" ,min1)
+print("maximum humidity of the day is:" ,max2)
+print("minimum humidity of the day is:" ,min2)
+?
+?
+('maximum temperature of the day is:', 31)
+('minimum temperature of the day is:', 0)
+('maximum humidity of the day is:', 95)
+('minimum humidity of the day is:', 0)
+plt.figure(figsize=(15,10))
+plt.tight_layout()
+seabornInstance.distplot(data['field1'])
+plt.title("temperature range")
+plt.figure(figsize=(15,10))
+plt.tight_layout()
+seabornInstance.distplot(data['field2'])
+plt.title("humidity range")
+C:\conda\lib\site-packages\matplotlib\axes\_axes.py:6462: UserWarning: The 'normed' kwarg is deprecated, and has been replaced by the 'density' kwarg.
+  warnings.warn("The 'normed' kwarg is deprecated, and has been "
+C:\conda\lib\site-packages\matplotlib\axes\_axes.py:6462: UserWarning: The 'normed' kwarg is deprecated, and has been replaced by the 'density' kwarg.
+  warnings.warn("The 'normed' kwarg is deprecated, and has been "
+Text(0.5,1,'humidity range')
+
+
+x= data['field2'].values.reshape(-1,1)
+y = data['field1'].values.reshape(-1,1)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+regressor = LinearRegression()  
+regressor.fit(x_train, y_train) #training the algorithm
+LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False)
+#To retrieve the intercept:
+print(regressor.intercept_)
+#For retrieving the slope:
+print(regressor.coef_)
+[27.12226153]
+[[0.01938947]]
+y_pred=regressor.predict(x_test)
+?
+?
+df1=pd.DataFrame({'Actual1': y_test.flatten(), 'Predicted1': y_pred.flatten()})
+df1
+?
+Actual1	Predicted1
+0	29	28.557083
+1	29	28.498914
+2	29	27.994788
+3	29	28.557083
+4	28	28.382577
+5	26	28.964261
+6	29	28.576472
+7	27	28.498914
+8	29	28.498914
+9	29	28.654030
+10	29	28.498914
+11	29	28.479525
+12	28	28.595861
+13	29	28.479525
+14	29	28.072346
+15	29	28.576472
+16	29	28.498914
+17	28	28.615251
+18	28	28.595861
+19	30	27.956009
+20	27	28.401967
+21	29	28.576472
+22	29	27.975398
+23	27	28.460135
+24	29	28.498914
+25	27	28.421356
+26	30	27.994788
+27	29	27.956009
+28	29	28.557083
+29	29	28.634640
+...	...	...
+144	27	28.828535
+145	29	28.673419
+146	30	28.460135
+147	26	28.266240
+148	29	28.479525
+149	28	28.479525
+150	29	28.634640
+151	29	28.479525
+152	29	28.557083
+153	29	28.615251
+154	27	28.479525
+155	29	28.052956
+156	29	28.576472
+157	29	28.498914
+158	27	28.440746
+159	28	28.634640
+160	31	27.975398
+161	28	28.595861
+162	29	28.498914
+163	29	27.994788
+164	29	28.479525
+165	29	28.634640
+166	29	28.576472
+167	29	28.479525
+168	29	28.615251
+169	29	27.975398
+170	29	27.956009
+171	29	28.537693
+172	27	28.401967
+173	28	28.615251
+174 rows × 2 columns
+
+?
+df3=df1.head(25)
+df3.plot(kind='bar',figsize=(16,10))
+plt.grid(which='major', linestyle='-', linewidth='0.5', color='green')
+plt.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+plt.title("temperature predictions")
+plt.show()
+?
+
+plt.scatter(x_test, y_test,  color='black')
+plt.plot(x_test, y_pred, color='red', linewidth=3)
+plt.show()
+
+print('Mean Absolute Error:', metrics.mean_absolute_error(y_test, y_pred))  
+print('Mean Squared Error:', metrics.mean_squared_error(y_test, y_pred))  
+print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(y_test, y_pred)))
+('Mean Absolute Error:', 1.0876577343694045)
+('Mean Squared Error:', 5.56014579169943)
+('Root Mean Squared Error:', 2.357996139034038)
+x1= data['field1'].values.reshape(-1,1)
+y1= data['field2'].values.reshape(-1,1)
+x1_train, x1_test, y1_train, y1_test = train_test_split(x1, y1, test_size=0.2, random_state=0)
+regressor = LinearRegression()  
+regressor.fit(x1_train, y1_train)
+LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False)
+#To retrieve the intercept:
+print(regressor.intercept_)
+#For retrieving the slope:
+print(regressor.coef_)
+[48.52373333]
+[[0.65674097]]
+y1_pred = regressor.predict(x1_test)
+?
+df2 = pd.DataFrame({'Actual2': y1_test.flatten(), 'Predicted2': y1_pred.flatten()})
+df2
+?
+Actual2	Predicted2
+0	74	67.569221
+1	71	67.569221
+2	45	67.569221
+3	74	67.569221
+4	65	66.912480
+5	95	65.598998
+6	75	67.569221
+7	71	66.255739
+8	71	67.569221
+9	79	67.569221
+10	71	67.569221
+11	70	67.569221
+12	76	66.912480
+13	70	67.569221
+14	49	67.569221
+15	75	67.569221
+16	71	67.569221
+17	77	66.912480
+18	76	66.912480
+19	43	68.225962
+20	66	66.255739
+21	75	67.569221
+22	44	67.569221
+23	69	66.255739
+24	71	67.569221
+25	67	66.255739
+26	45	68.225962
+27	43	67.569221
+28	74	67.569221
+29	78	67.569221
+...	...	...
+144	88	66.255739
+145	80	67.569221
+146	69	68.225962
+147	59	65.598998
+148	70	67.569221
+149	70	66.912480
+150	78	67.569221
+151	70	67.569221
+152	74	67.569221
+153	77	67.569221
+154	70	66.255739
+155	48	67.569221
+156	75	67.569221
+157	71	67.569221
+158	68	66.255739
+159	78	66.912480
+160	44	68.882703
+161	76	66.912480
+162	71	67.569221
+163	45	67.569221
+164	70	67.569221
+165	78	67.569221
+166	75	67.569221
+167	70	67.569221
+168	77	67.569221
+169	44	67.569221
+170	43	67.569221
+171	73	67.569221
+172	66	66.255739
+173	77	66.912480
+174 rows × 2 columns
+
+df4=df2.head(25)
+df4.plot(kind='bar',figsize=(16,10))
+plt.grid(which='major', linestyle='-', linewidth='0.5', color='green')
+plt.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+plt.title("humidity predictions")
+plt.show()
+
+plt.scatter(x1_test, y1_test,  color='black')
+plt.plot(x1_test, y1_pred, color='red', linewidth=3)
+plt.show()
+
+print('Mean Absolute Error:', metrics.mean_absolute_error(y_test, y_pred))  
+print('Mean Squared Error:', metrics.mean_squared_error(y_test, y_pred))  
+print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(y_test, y_pred)))
+('Mean Absolute Error:', 1.0876577343694045)
+('Mean Squared Error:', 5.56014579169943)
+('Root Mean Squared Error:', 2.357996139034038)
+max3=y_pred.max() 
+min3=y_pred.min()
+max4=y1_pred.max()
+min4=y1_pred.min()
+print("maximum predicted temperature is:" ,max3)
+print("minimum predicted temperature is:" ,min3)
+print("maximum predicted humidity is:" ,max4)
+print("minimum predicted humidity is:" ,min4)
+('maximum predicted temperature is:', 28.964261430049664)
+('minimum predicted temperature is:', 27.122261529372192)
+('maximum predicted humidity is:', 68.88270332737545)
+('minimum predicted humidity is:', 48.52373333008646)
+?
