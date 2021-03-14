@@ -1,3 +1,3 @@
-# smart-irrigation-system
+# Smart-Irrigation-System
 B.E(Electronics) Final Year Project
 
